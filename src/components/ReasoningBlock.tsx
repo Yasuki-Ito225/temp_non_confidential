@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { TraceEntry } from "@/types/trace";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface ReasoningBlockProps {
   entries: TraceEntry[];
@@ -47,9 +49,11 @@ export default function ReasoningBlock({ entries, isStreaming, showTrace }: Reas
           {visibleEntries.map((entry, idx) => {
             if (entry.type === "rationale") {
               return (
-                <p key={idx} className="reasoning-block__rationale">
-                  {entry.text}
-                </p>
+                <div key={idx} className="reasoning-block__rationale">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {entry.text ?? ""}
+                  </ReactMarkdown>
+                </div>
               );
             }
             if (entry.type === "action_group") {

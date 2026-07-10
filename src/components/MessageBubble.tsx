@@ -2,6 +2,8 @@
 
 import { TraceEntry } from "@/types/trace";
 import ReasoningBlock from "./ReasoningBlock";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";   
 
 interface MessageBubbleProps {
   role: "user" | "assistant";
@@ -37,7 +39,13 @@ export default function MessageBubble({
           />
         )}
         <div className={`message-bubble__content${isStreaming ? " message-bubble__content--streaming" : ""}`}>
-          {content || (isStreaming ? <span className="message-bubble__cursor" aria-label="入力中" /> : null)}
+          {content ? (
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {content}
+            </ReactMarkdown>
+          ) : (
+            isStreaming ? <span className="message-bubble__cursor" aria-label="入力中" /> : null
+          )}
         </div>
       </div>
     </div>
